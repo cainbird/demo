@@ -39,6 +39,19 @@
       * 其中Province为第三方类，所以注册方式为，需要实现一个对象生成函数，并在函数上方加上注解`@Bean`，默认Bean对象的名称为函数名，也可以自定义Bean对象的名称`@Bean("名称")`。<br>
       * 如果方法内部需要使用到ioc容器中已存在的bean对象，那么只需要在方法上参数中声明即可，spring会自动注入。（创建对象存在依赖对象的情况）<br>
       * 只要放在可以被`@ComponentScan`扫描到的类中都可以。不建议放在启动类下，建议放在配置类中集中注册。配置类采用注解`@Configuration`。
-   2. `@Import`，这个注解解决的问题是，如果配置类并不在`@ComponentScan`扫描的范围中。（这种情况下不需要再考虑注解`@Component`）
+   2. `@Import`，这个注解加在启动类上方。这个注解解决的问题是，如果配置类并不在`@ComponentScan`扫描的范围中。（这种情况下不需要再考虑注解`@Component`）
       1. 导入配置类：需要在启动类中使用`@Import(XXX.class)`，值是对应的配置类。支持数组方式注入，`@Import({XXX.class,XXX.class,XXX.class,XXX.class,XXX.class})`
-      2. 导入ImportSelector接口实现类：
+      2. 导入ImportSelector接口实现类：需要实现spring接口`ImportSelector`的`selectImports`方法，方法需要返回`String[]`(内容是需要导入的配置类)，替代上面的数组注入方式。使用`@Import(XXX.class)`即可,值是对应的ImportSelector接口实现类。
+      3. 在实际情况下，为了便于维护，会考虑把配置类信息写在项目的配置文件中，而不是直接在ImportSelector接口实现类中写死。所以会在resources文件夹下创建一个项目配置文件如`common.imports`。然后在selector类中读取文件内容，并以正确格式返回。
+         ```
+         List<String> imports = new ArrayList<>();
+         InputStream is = CommonImportSelector.class.getClassLoader().getResourceAsStream("common.imports");
+         BufferedReader br = new BufferedReader(new InputStreamReader(is));
+         String line = null;
+         while ((line = br.readLine())!=null) {
+            imports.add(line);
+         }
+         br.close();
+         return imports.toArray(new String[0]);
+         ```
+      4. 为了提高代码的整洁性，所以一般不会在启动类上方加那么多的注解，这就需要定义组合注解，将自定义的注解封装一下。特别注意，除了需要组合的注解外，还要加上`@Target(ElementType.TYPE)`（可以在类上使用）和`@Retention(RetentionPolicy.RUNTIME)`（保留到运行时阶段）。
