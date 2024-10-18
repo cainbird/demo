@@ -55,3 +55,9 @@
          return imports.toArray(new String[0]);
          ```
       4. 为了提高代码的整洁性，所以一般不会在启动类上方加那么多的注解，这就需要定义组合注解，将自定义的注解封装一下。特别注意，除了需要组合的注解外，还要加上`@Target(ElementType.TYPE)`（可以在类上使用）和`@Retention(RetentionPolicy.RUNTIME)`（保留到运行时阶段）。
+6. Bean对象注册条件，有些时候对于一些Bean对象是否注入会加一些前置的判断，比如配置项存在时，哪个对象不存在时等等，这种情况下就需要对Bean对象的注册加一些条件。例如<br>
+   `@ConditionalOnProperty(prefix = "country",name = {"name","system"})` 判断对应配置项是否存在（为了方便修改和维护，会选择将Bean对象需要的静态数据值放在项目配置文件中，需要时再读取）<br>
+   `@ConditionalOnMissingBean(Country.class)` 判断指定类的Bean对象是否存在，若存在则不注入，否则注入。（可能是对某些场景下的分情况处理）<br>
+   `@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")` 判断环境中是否存在指定的类，如果存在则注入，否则不注入。（可能是为了应对一些前置条件，或当前Bean对象对某些类存在依赖）
+7. 
+   
