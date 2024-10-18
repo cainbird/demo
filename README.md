@@ -58,6 +58,16 @@
 6. Bean对象注册条件，有些时候对于一些Bean对象是否注入会加一些前置的判断，比如配置项存在时，哪个对象不存在时等等，这种情况下就需要对Bean对象的注册加一些条件。例如<br>
    `@ConditionalOnProperty(prefix = "country",name = {"name","system"})` 判断对应配置项是否存在（为了方便修改和维护，会选择将Bean对象需要的静态数据值放在项目配置文件中，需要时再读取）<br>
    `@ConditionalOnMissingBean(Country.class)` 判断指定类的Bean对象是否存在，若存在则不注入，否则注入。（可能是对某些场景下的分情况处理）<br>
-   `@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")` 判断环境中是否存在指定的类，如果存在则注入，否则不注入。（可能是为了应对一些前置条件，或当前Bean对象对某些类存在依赖）
-7. 
+   `@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")` 判断环境中是否存在指定的类，如果存在则注入，否则不注入。（可以保证注入的Bean对象的类是存在的，也可能是为了应对一些前置条件，或当前Bean对象对某些类存在依赖）
+7. SpringBoot自动配置原理：
+   1. 首先在主启动类上添加了`@SpringBootApplication`注解，这个注解组合了`@EnableAutoConfiguration`注解，这个注解会开启自动配置。
+   2. `@EnableAutoConfiguration`注解也是一个组合注解，组合了`@Import`注解，`@Import(AutoConfigurationImportSelector.class)`这个注解导入了AutoConfigurationImportSelector类。
+   3. 这个AutoConfigurationImportSelector类实现了`ImportSelector`接口，并实现了接口的`selectImports`方法，这个方法它经过层层调用，最终会读取到jar包中META-INF目录下后缀名为.import的文件，当然SpringBoot2.7以前的版本读取的是Spring.factories文件，2.7-3.0之间这两个文件都兼容，3.0之后只读取.import后缀的这个文件。这个文件中配置了很多相关配置类的全类名。
+   4. SpringBoot读取到全类名后，会解析对应的配置类的注册条件，也就是`@Conditional`注解及其衍生注解，把满足注册条件的Bean对象自动注入到IOC容器中。
+8. 编写自动配置的jar包：
+   1. 针对jar包中想要实现自动注入的类，实现对应的配置类。
+   2. 需要编写一个自动配置的类，上面加上`@AuotoConfiguration`注解和`@Import`注解，把实现的配置类加入。`@Import(配置类.class)`
+   3. 在jar包的META-INF/spring目录下创建org.springframework.boot.autoconfigure.AutoConfiguration.imports文件，并把自动配置类的全类名写入。
+   4. 导入jar包就会实现Bean对象的自动注入
+9. 
    
