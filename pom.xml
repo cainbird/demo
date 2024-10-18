@@ -45,6 +45,12 @@
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>cn.itcast</groupId>
+			<artifactId>common-pojo</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 		<!-- web起步依赖 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
