@@ -38,6 +38,9 @@ public class CommonImportSelector implements ImportSelector{
             }
         }
         return imports.toArray(new String[0]);
+        
+
+        // return new String[]{"com.example.config.CommonConfig"};
     }
 
 }

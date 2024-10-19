@@ -7,7 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.1.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
@@ -40,15 +40,28 @@
 
 
 		<!-- mybatis起步依赖 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>3.0.0</version>
+		</dependency> -->
+		<!-- 自定义的mybatis起步依赖 -->
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>dmybatis-spring-boot-starter</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
+
 		<dependency>
 			<groupId>cn.itcast</groupId>
 			<artifactId>common-pojo</artifactId>
-			<version>1.0</version>
+			<version>2.0</version>
+		</dependency>
+
+		<!-- springboot核心起步依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
 		<!-- web起步依赖 -->

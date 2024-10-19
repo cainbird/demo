@@ -15,19 +15,19 @@ import cn.itcast.pojo.Country;
 @SpringBootApplication
 // @Import({CommonConfig.class})
 // @Import(CommonImportSelector.class)
-@EnableCommonConfig
+// @EnableCommonConfig
 public class DemoApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
 
-		Country country = context.getBean(Country.class);
-		System.out.println(country);
+		// Country country = context.getBean(Country.class);
+		// System.out.println(country);
 
 		
-		System.out.println(context.getBean("province"));
+		// System.out.println(context.getBean("province"));
+
+		// System.out.println(context.getBean("dispatcherServlet"));
 	}
-
-
 
 }

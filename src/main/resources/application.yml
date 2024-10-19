@@ -4,3 +4,7 @@ spring:
     url: jdbc:mysql://10.112.152.241:3306/mybatis
     username: root
     password: 1234
+
+# country:
+#   name: china
+#   system: socialism
