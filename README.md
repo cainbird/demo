@@ -69,5 +69,11 @@
    2. 需要编写一个自动配置的类，上面加上`@AuotoConfiguration`注解和`@Import`注解，把实现的配置类加入。`@Import(配置类.class)`
    3. 在jar包的META-INF/spring目录下创建org.springframework.boot.autoconfigure.AutoConfiguration.imports文件，并把自动配置类的全类名写入。
    4. 导入jar包就会实现Bean对象的自动注入
-9. 
+9. 编写starterjar包：
+    1. autoconfigurer：用来提供自动配置功能，需要的内容包括：
+       1. autoconfig，实现自动配置，包括注解`@AutoConfiguration`和下面的对象生成方法并用`@Bean`注解来注入IOC容器。
+       2. 需要在resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports中写入配置类的全类名，保证spring会主动解析配置类。
+    2. starter：用来进行jar包管理的工作，需要在pom文件中引入所有用到的jar包，包括autoconfig和config引入的jar包。
+    3. 在spring项目中引入starter jar包即可
+       
    
